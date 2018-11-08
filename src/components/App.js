@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import Weather from './Weather'
+import News from './News'
 import { init } from '../store'
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
         return (
             <Fragment>
                 <Weather />
+                <News />
             </Fragment>
         )
     }
