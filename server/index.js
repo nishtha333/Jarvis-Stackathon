@@ -11,7 +11,8 @@ const io = require('socket.io')(server);
 // handle sockets
 require('./socket')(io);
 
-const TIME_INTERVAL_FOR_REFRESH_REQUEST = process.env.TIME_INTERVAL_FOR_REFRESH_REQUEST || 600000;
+const TIME_INTERVAL_FOR_REFRESH_REQUEST = process.env.TIME_INTERVAL_FOR_REFRESH_REQUEST || 30000;
+
 
 //Subscribe to Latest News
 const newsapi = new NewsAPI(NEWS_API_KEY);
@@ -23,6 +24,7 @@ setInterval(() => {
             })
             .catch(error => console.log(error));
       }, TIME_INTERVAL_FOR_REFRESH_REQUEST);
+
 
 //Subscribe to Stock Updates
 //TO DO: Hard-code for now. Users should be able to add to it and only get updates for the ones they requested
