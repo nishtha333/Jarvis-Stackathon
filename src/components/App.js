@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 import Weather from './Weather'
 import News from './News'
 import Stocks from './Stocks'
@@ -12,12 +15,20 @@ class App extends Component {
     }
 
     render() {
+        const { classes } = this.props
+
         return (
-            <Fragment>
-                <Weather />
-                <News />
-                <Stocks />
-            </Fragment>
+            <Grid container spacing={16} className={classes.grid}>
+                <Grid item xs>
+                    <Weather />
+                </Grid>
+                <Grid item xs>
+                    <Stocks />
+                </Grid>
+                <Grid item xs>
+                    <News />
+                </Grid>
+            </Grid>
         )
     }
 }
@@ -28,4 +39,16 @@ const mapDispatchToProps = (dispatch) => {
     }   
 }
 
-export default connect(null, mapDispatchToProps)(App)
+App.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+const styles = {
+    grid: {
+        alignItems: "flex-start",
+        direction: "row",
+        justify:"center"
+    }
+};
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(App))

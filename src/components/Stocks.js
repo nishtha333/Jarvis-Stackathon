@@ -11,7 +11,7 @@ class Stocks extends Component {
         //price_date, last_price, close_price, percent_change, open_price, high_price, low_price
         
         return (
-            <Paper className={classes.paper}>
+            <Paper>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -54,10 +54,6 @@ const CustomTableCell = withStyles(theme => ({
 }))(TableCell);
 
 const styles = theme => ({
-    paper: {
-        height: "100%",
-        overflowY: "auto"
-    },
     row: {
         '&:nth-of-type(odd)': {
           backgroundColor: theme.palette.background.default,
