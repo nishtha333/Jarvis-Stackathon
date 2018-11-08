@@ -16,7 +16,7 @@ const TIME_INTERVAL_FOR_REFRESH_REQUEST = process.env.TIME_INTERVAL_FOR_REFRESH_
 //Subscribe to Latest News
 const newsapi = new NewsAPI(NEWS_API_KEY);
 setInterval(() => { 
-      newsapi.v2.topHeadlines({ sources: 'bbc-news,the-verge', language: 'en'})
+      newsapi.v2.everything({ sources: 'bloomberg,business-insider,cnbc,google-news,abc-news,bbc-news,bbc-sport,the-verge', language: 'en'})
             .then(response => {
                   MemoryData.news = { articles: response.articles };
                   io.sockets.emit('update-news', MemoryData.news);

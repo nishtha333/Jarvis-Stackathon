@@ -9,7 +9,7 @@ class Weather extends Component {
 
     render() {
         const { details, error, isLoading, classes } = this.props
-        console.log(this.props)
+
         return (
             <Fragment>
                 {

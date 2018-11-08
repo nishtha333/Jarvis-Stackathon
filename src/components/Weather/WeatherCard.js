@@ -39,7 +39,6 @@ WeatherCard.propTypes = {
 
 const styles = theme => ({
   card: {
-    minWidth: 275,
     marginBottom: 16,
   },
   bullet: {
