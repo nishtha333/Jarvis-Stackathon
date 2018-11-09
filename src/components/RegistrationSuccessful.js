@@ -19,12 +19,12 @@ const RegistrationSuccessful = ({classes}) => {
 
 RegistrationSuccessful.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
 
 const styles = {
     title: {
         marginTop: "10vh", marginBottom: "5vh", fontWeight: "bold"
     }
-};
+}
 
 export default withStyles(styles)(RegistrationSuccessful)

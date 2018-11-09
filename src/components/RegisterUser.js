@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Grid, Button, TextField, Typography, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 //import { addUser } from '../store';
 
 class RegisterUser extends Component {
@@ -10,7 +12,6 @@ class RegisterUser extends Component {
         this.state = {
             firstName: '',
             lastName: '',
-            email: '',
             image: '',
             error: '',
             }
@@ -24,10 +25,10 @@ class RegisterUser extends Component {
     }
 
     handleRegistration(event) {
-        const { firstName, lastName, email } = this.state;
+        const { firstName, lastName } = this.state;
         event.preventDefault();
         /*this.props
-            .addUser({ firstName, lastName, email, address })
+            .addUser({ firstName, lastName })
             .then(() => this.props.history.push('/registerSuccess'))
             .catch(error => {
                 console.log(error.errors);
@@ -37,35 +38,26 @@ class RegisterUser extends Component {
     }
 
     render() {
-        const { firstName, lastName, email, error } = this.state;
+        const { firstName, lastName, image, error } = this.state;
         const { handleChange, handleRegistration } = this;
-
-        const isValidEmail = email => {
-            const regExp = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
-            return regExp.test(String(email));
-        };
+        const { classes } = this.props
 
         return (
-            <div style={{ marginTop: 25, marginBottom: 25, height: '80vh' }}>
+            <div className={classes.root}>
                 <Grid container justify="center">
                     <Grid item>
                         <Paper elevation={1}>
-                            <form style={{ display: 'flex', flexDirection: 'column', width: '30vw', padding: '5vh 5vw 5vh 5vw'}}>
-                                <Typography variant="title" style={styles.element}>Create account</Typography>
+                            <form className={classes.form}>
+                                <Typography variant="title" className={classes.element}>Create account</Typography>
                                 <TextField required id="firstName" label="First Name" variant="outlined" 
-                                    style={styles.element} value={firstName} onChange={handleChange('firstName')}/>
+                                    className={classes.element} value={firstName} onChange={handleChange('firstName')}/>
 
                                 <TextField required id="lastName" label="Last Name" variant="outlined"
-                                    style={styles.element} value={lastName} onChange={handleChange('lastName')} />
+                                    className={classes.element} value={lastName} onChange={handleChange('lastName')} />
 
 
-                                <TextField required id="email" label="Email" variant="outlined" style={styles.element} 
-                                    value={email} onChange={handleChange('email')} error={email.length > 0 && !isValidEmail(email)} />
-
-
-                                <Button variant="contained" style={{ width: '10vw', height: '6vh', margin: 10 }}
-                                    onClick={handleRegistration} 
-                                    disabled={ !firstName || !lastName || !email || !isValidEmail(email)}>
+                                <Button variant="contained" className={classes.button} onClick={handleRegistration} 
+                                    disabled={ !firstName || !lastName || !image }>
                                     Register
                                 </Button>
 
@@ -74,9 +66,10 @@ class RegisterUser extends Component {
                                 </Typography>
 
                                 {
-                                    error && <Typography variant="subheading" style={{ color: 'red' }}>
-                                                Error processing request. Please try again
-                                            </Typography>
+                                    error && 
+                                        <Typography variant="subheading" className={classes.error}>
+                                            Error processing request. Please try again
+                                        </Typography>
                                 }
                                 </form>
                         </Paper>
@@ -93,8 +86,33 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const styles = {
-    element: { margin: 10 },
+RegisterUser.propTypes = {
+    classes: PropTypes.object.isRequired,
 }
 
-export default connect(null, mapDispatchToProps)(RegisterUser);
+const styles = {
+    root: {
+        marginTop: 25, 
+        marginBottom: 25, 
+        height: '80vh'
+    },
+    form: {
+        display: 'flex', 
+        flexDirection: 'column', 
+        width: '30vw', 
+        padding: '5vh 5vw 5vh 5vw'
+    },
+    element: { 
+        margin: 10 
+    },
+    button: {
+        width: '10vw', 
+        height: '6vh', 
+        margin: 10 
+    },
+    error: {
+        color: "red"
+    }
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(RegisterUser))
