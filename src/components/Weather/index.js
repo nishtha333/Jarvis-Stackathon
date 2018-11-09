@@ -12,6 +12,7 @@ class Weather extends Component {
 
         return (
             <Fragment>
+                <Typography variant="title" className={classes.title}>Current Weather</Typography>
                 {
                     ((isLoading === undefined) || isLoading) ? (<CircularProgress className={classes.progress} />)
                         : (error ? <Typography variant="h4">Error Loading Weather Data...</Typography>
@@ -36,6 +37,13 @@ Weather.propTypes = {
 };
   
 const styles = theme => ({
+    title: {
+        backgroundColor: "#FFA726",
+        color: theme.palette.common.white,
+        fontWeight: "bold",
+        fontSize: 16,
+        padding: 20
+    },
     progress: {
         margin: theme.spacing.unit * 2
     }

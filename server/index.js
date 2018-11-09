@@ -2,7 +2,7 @@ const MemoryData = require('./socket/data');
 const app = require('./app');
 const NewsAPI = require('newsapi');
 const axios = require('axios');
-const { NEWS_API_KEY, INTRINO_STOCK_API_KEY } = require('./config');
+const { NEWS_API_KEY, INTRINO_STOCK_API_KEY, TMBD_API_KEY } = require('./config');
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
@@ -13,7 +13,6 @@ require('./socket')(io);
 
 const TIME_INTERVAL_FOR_REFRESH_REQUEST = process.env.TIME_INTERVAL_FOR_REFRESH_REQUEST || 30000;
 
-
 //Subscribe to Latest News
 const newsapi = new NewsAPI(NEWS_API_KEY);
 setInterval(() => { 
@@ -23,7 +22,7 @@ setInterval(() => {
                   io.sockets.emit('update-news', MemoryData.news);
             })
             .catch(error => console.log(error));
-      }, TIME_INTERVAL_FOR_REFRESH_REQUEST);
+}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
 
 
 //Subscribe to Stock Updates
@@ -38,8 +37,30 @@ setInterval(() => {
                   io.sockets.emit('update-stocks', MemoryData.stocks);
             })
             .catch(error => console.log(error));
-      }, TIME_INTERVAL_FOR_REFRESH_REQUEST);
+}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
 
 
+const TOP_POPULAR_ITEMS_NUMBER = 10;
+const sortByPopularity = (obj1, obj2) =>  (obj2.popularity - obj1.popularity);
 
+//Get Trending Movies
+setInterval(() => { 
+      axios.get(`https://api.themoviedb.org/3/trending/movie/day?api_key=${TMBD_API_KEY}`)
+            .then(response => response.data)
+            .then(movies => {
+                  MemoryData.movies = movies.results.sort(sortByPopularity).slice(TOP_POPULAR_ITEMS_NUMBER);
+                  io.sockets.emit('update-movies', MemoryData.movies);
+            })
+            .catch(error => console.log(error));
+}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
 
+//Get Trending TV Shows
+setInterval(() => { 
+      axios.get(`https://api.themoviedb.org/3/trending/tv/day?api_key=${TMBD_API_KEY}`)
+            .then(response => response.data)
+            .then(tv => {
+                  MemoryData.tv = tv.results.sort(sortByPopularity).slice(TOP_POPULAR_ITEMS_NUMBER);
+                  io.sockets.emit('update-tv', MemoryData.tv);
+            })
+            .catch(error => console.log(error));
+}, TIME_INTERVAL_FOR_REFRESH_REQUEST);

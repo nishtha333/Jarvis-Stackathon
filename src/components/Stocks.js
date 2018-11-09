@@ -45,8 +45,10 @@ Stocks.propTypes = {
 
 const CustomTableCell = withStyles(theme => ({
     head: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: "#673AB7",
         color: theme.palette.common.white,
+        fontWeight: "bold",
+        fontSize: 16
     },
     body: {
         fontSize: 14,

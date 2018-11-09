@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { List, ListItemText, ListItem, Paper } from '@material-ui/core';
+import { List, ListItemText, ListItem, Paper, Typography } from '@material-ui/core';
 
 class News extends Component {
 
@@ -10,7 +10,8 @@ class News extends Component {
         const { news, classes } = this.props
 
         return (
-            <Paper>
+            <Paper className={classes.paper}>
+                <Typography variant="title" className={classes.title}>Top News</Typography>
                 <List>
                 {
                     news.map((article, index) => 
@@ -30,7 +31,19 @@ News.propTypes = {
     classes: PropTypes.object.isRequired,
 };
   
-const styles = {
+const styles = theme => ({
+    paper: {
+        maxHeight: "100%",
+        overflow: "auto",
+        marginRight: "20px"
+    },
+    title: {
+        backgroundColor: "#448AFF",
+        color: theme.palette.common.white,
+        fontWeight: "bold",
+        fontSize: 16,
+        padding: 20
+    },
     button: {
         display: "flex"
     },
@@ -38,7 +51,7 @@ const styles = {
         width: "50px",
         height: "50px"
     }
-};
+});
 
 const mapStateToProps = ({news}) => {
     return {

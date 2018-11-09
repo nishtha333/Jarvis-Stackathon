@@ -1,7 +1,9 @@
 class Data {
     constructor() {
         this._news = {},
-        this._stocks = []
+        this._stocks = [],
+        this._movies = [],
+        this._tv = []
     }
 
     get news() {
@@ -26,6 +28,22 @@ class Data {
             }
             return result;
         }, {})
+    }
+
+    get movies() {
+        return this._movies;
+    }
+
+    set movies(data) {
+        this._movies = data;   
+    }
+
+    get tv() {
+        return this._tv;
+    }
+
+    set tv(data) {
+        this._tv = data;   
     }
 }
 
