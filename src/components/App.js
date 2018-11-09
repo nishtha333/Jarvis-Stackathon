@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, CssBaseline } from '@material-ui/core';
-import Weather from './Weather'
-import News from './News'
-import Stocks from './Stocks'
-import Movies from './Movies'
-import TvShows from './TvShows'
+import { CssBaseline } from '@material-ui/core';
+import Home from './Home'
+import Nav from './Nav'
+import Login from './Login'
+import RegisterUser from './RegisterUser'
+import RegistrationSuccessful from './RegistrationSuccessful'
 import { init } from '../store'
 
 class App extends Component {
@@ -17,38 +18,20 @@ class App extends Component {
     }
 
     render() {
-        const { classes } = this.props
-
         return (
-            <Fragment>
+            <Router>
+                <Fragment>
                 <CssBaseline />
-                <Grid container className={classes.gridRow}>
-                    <Grid item >
-                        <Grid container className={classes.gridColumn}>
-                            <Grid item xs className={classes.gridMargin}>
-                                <Weather />
-                            </Grid>
-                            <Grid item xs className={classes.gridMargin}>
-                                <Movies />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs>
-                        <Grid container className={classes.gridColumn}>
-                            <Grid item xs className={classes.gridMargin}>
-                                <Stocks />
-                            </Grid>
-                            
-                            <Grid item xs className={classes.gridMargin}>
-                                <TvShows />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs className={classes.gridMargin}>
-                        <News />
-                    </Grid>         
-                </Grid>
-            </Fragment>
+                <Route path="/" render={({ history }) => <Nav history={history} />} />
+                <Switch>
+                    <Route path="/login" render={({ history }) => <Login history={history} />}/>
+                    <Route path="/register" component={RegisterUser} />
+                    <Route path="/registerSuccess" component={RegistrationSuccessful} />
+                    {/*<Route path="/users/:id/profile" component={Profile} />*/}
+                    <Route exact path="/" component={Home} />
+                </Switch>
+                </Fragment>
+            </Router>
         )
     }
 }
@@ -66,21 +49,10 @@ App.propTypes = {
 const styles = {
     "@global": {
 		body: {
-            backgroundColor: "#BDBDBD"
+            //backgroundImage: "url('/dist/backgroundImage.png')",
+            backgroundColor: "white"
         }
-	},
-    gridRow: {
-        alignItems: "flex-start",
-        direction: "row",
-        justify:"center"
-    },
-    gridColumn: {
-        display: "flex",
-        flexDirection: "column"
-    },
-    gridMargin: {
-        margin: "20px"
-    }
+	}
 };
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(App))
