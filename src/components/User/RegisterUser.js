@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Grid, Button, TextField, Typography, Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import AccountBoxIcon from '@material-ui/icons/AccountBox'
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Grid, Button, TextField, Typography, Paper } from '@material-ui/core'
+import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+import Camera from './Camera'
 //import { addUser } from '../store';
 
 class RegisterUser extends Component {
@@ -17,17 +17,22 @@ class RegisterUser extends Component {
             error: '',
             }
 
-        this.handleRegistration = this.handleRegistration.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleRegistration = this.handleRegistration.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSetImage = this.handleSetImage.bind(this)
     }
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.value })
     }
 
+    handleSetImage(image) {
+        this.setState({image})
+    }
+
     handleRegistration(event) {
-        const { firstName, lastName } = this.state;
-        event.preventDefault();
+        const { firstName, lastName, image } = this.state
+        event.preventDefault()
         /*this.props
             .addUser({ firstName, lastName })
             .then(() => this.props.history.push('/registerSuccess'))
@@ -39,8 +44,8 @@ class RegisterUser extends Component {
     }
 
     render() {
-        const { firstName, lastName, image, error } = this.state;
-        const { handleChange, handleRegistration } = this;
+        const { firstName, lastName, image, error } = this.state
+        const { handleChange, handleRegistration, handleSetImage } = this
         const { classes } = this.props
 
         return (
@@ -56,7 +61,7 @@ class RegisterUser extends Component {
                                 <TextField required id="lastName" label="Last Name" variant="outlined"
                                     className={classes.element} value={lastName} onChange={handleChange('lastName')} />
 
-                                <AccountBoxIcon style={{fontSize: "25vh"}} />
+                                <Camera image={image} setImage={handleSetImage} />
 
                                 <Button variant="contained" className={classes.button} onClick={handleRegistration} 
                                     disabled={ !firstName || !lastName || !image }>
