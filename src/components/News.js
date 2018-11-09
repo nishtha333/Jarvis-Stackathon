@@ -2,26 +2,30 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { List, ListItemText, ListItem, Paper, Typography } from '@material-ui/core';
+import { List, ListItemText, ListItem, Paper, Typography, CircularProgress } from '@material-ui/core';
 
 class News extends Component {
 
     render() {
-        const { news, classes } = this.props
+        const { news, classes, isLoading } = this.props
 
         return (
             <Paper className={classes.paper}>
                 <Typography variant="title" className={classes.title}>Top News</Typography>
-                <List>
                 {
-                    news.map((article, index) => 
-                        <ListItem button key={index} component="a" href={article.url} className={classes.button}>
-                            <img src={article.urlToImage} className={classes.image} />
-                            <ListItemText primary={article.title} secondary={article.description} />
-                        </ListItem>
+                    (isLoading ? <CircularProgress className={classes.progress} />
+                        :   <List>
+                            {
+                                news.map((article, index) => 
+                                    <ListItem button key={index} component="a" href={article.url} className={classes.button}>
+                                        <img src={article.urlToImage} className={classes.image} />
+                                        <ListItemText primary={article.title} secondary={article.description} />
+                                    </ListItem>
+                                )
+                            }
+                            </List>
                     )
                 }
-                </List>
             </Paper>
         )
     }
@@ -50,12 +54,16 @@ const styles = theme => ({
     image: {
         width: "50px",
         height: "50px"
+    },
+    progress: {
+        margin: theme.spacing.unit * 2
     }
 });
 
 const mapStateToProps = ({news}) => {
     return {
-        news
+        news,
+        isLoading: (news === undefined || !news.length)
     }
 }
 

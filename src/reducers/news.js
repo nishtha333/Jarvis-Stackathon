@@ -6,7 +6,9 @@ const _setNewsArticles = (articles) => ({ type: SET_NEWS_ARTICLES, articles })
 const getNews = () => {
     return (dispatch) => {
         socket.on('update-news', message => {
-            dispatch(_setNewsArticles(message.articles))
+            if(message.articles) {
+                dispatch(_setNewsArticles(message.articles))
+            }
           })
     }
 }

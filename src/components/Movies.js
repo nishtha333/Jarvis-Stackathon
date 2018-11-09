@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core';
+import { Paper, Table, TableHead, TableRow, TableBody, TableCell, CircularProgress } from '@material-ui/core';
 
 class Movies extends Component {
 
     render() {
-        const { movies, classes } = this.props
+        const { movies, classes, isLoading } = this.props
         
         return (
             <Paper>
@@ -20,11 +20,14 @@ class Movies extends Component {
                     </TableHead>
                     <TableBody>
                     {
-                        movies.map((movie, index) => 
-                            <TableRow key={index} className={classes.row}>
-                                <CustomTableCell>{movie.title}</CustomTableCell>
-                                <CustomTableCell>{movie.popularity}</CustomTableCell>
-                            </TableRow>)
+                        (isLoading 
+                            ? <CircularProgress className={classes.progress} />
+                            : movies.map((movie, index) => 
+                                <TableRow key={index} className={classes.row}>
+                                    <CustomTableCell>{movie.title}</CustomTableCell>
+                                    <CustomTableCell>{movie.popularity}</CustomTableCell>
+                                </TableRow>)
+                        )
                     }
                     </TableBody>
                 </Table>
@@ -54,12 +57,16 @@ const styles = theme => ({
         '&:nth-of-type(odd)': {
           backgroundColor: theme.palette.background.default,
         },
+    },
+    progress: {
+        margin: theme.spacing.unit * 2
     }
 });
 
 const mapStateToProps = ({movies}) => {
     return {
-        movies
+        movies,
+        isLoading: (movies === undefined || !movies.length)
     }
 }
 

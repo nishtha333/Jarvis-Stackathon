@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core';
+import { Paper, Table, TableHead, TableRow, TableBody, TableCell, CircularProgress } from '@material-ui/core';
 
 class Stocks extends Component {
 
     render() {
-        const { stocks, classes } = this.props
+        const { stocks, classes, isLoading } = this.props
         //price_date, last_price, close_price, percent_change, open_price, high_price, low_price
         
         return (
@@ -22,15 +22,18 @@ class Stocks extends Component {
                     </TableHead>
                     <TableBody>
                     {
-                        Object.keys(stocks).map(identifier => 
-                            <TableRow key={identifier} className={classes.row}>
-                                <CustomTableCell>{identifier}</CustomTableCell>
-                                <CustomTableCell>{stocks[identifier].last_price}</CustomTableCell>
-                                <CustomTableCell 
-                                    className={stocks[identifier].percent_change < 0 ? classes.negativeChg: classes.positiveChg }>
-                                    {`${(stocks[identifier].percent_change * 100).toFixed(2)} %`}
-                                </CustomTableCell>
-                            </TableRow>)
+                        (isLoading 
+                            ? <CircularProgress className={classes.progress} />
+                            : Object.keys(stocks).map(identifier => 
+                                <TableRow key={identifier} className={classes.row}>
+                                    <CustomTableCell>{identifier}</CustomTableCell>
+                                    <CustomTableCell>{stocks[identifier].last_price}</CustomTableCell>
+                                    <CustomTableCell 
+                                        className={stocks[identifier].percent_change < 0 ? classes.negativeChg: classes.positiveChg }>
+                                        {`${(stocks[identifier].percent_change * 100).toFixed(2)} %`}
+                                    </CustomTableCell>
+                                </TableRow>)
+                        )
                     }
                     </TableBody>
                 </Table>
@@ -66,12 +69,16 @@ const styles = theme => ({
     },
     positiveChg: {
         color: "green"
+    },
+    progress: {
+        margin: theme.spacing.unit * 2
     }
 });
 
 const mapStateToProps = ({stocks}) => {
     return {
-        stocks
+        stocks,
+        isLoading: (stocks === undefined || !Object.keys(stocks).length)
     }
 }
 

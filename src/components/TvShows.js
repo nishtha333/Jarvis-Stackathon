@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core';
+import { Paper, Table, TableHead, TableRow, TableBody, TableCell, CircularProgress } from '@material-ui/core';
 
 class TvShows extends Component {
 
     render() {
-        const { tvShows, classes } = this.props
+        const { tvShows, classes, isLoading } = this.props
         
         return (
             <Paper>
@@ -20,11 +20,14 @@ class TvShows extends Component {
                     </TableHead>
                     <TableBody>
                     {
-                        tvShows.map((tvShow, index) => 
-                            <TableRow key={index} className={classes.row}>
-                                <CustomTableCell>{tvShow.name}</CustomTableCell>
-                                <CustomTableCell>{tvShow.popularity}</CustomTableCell>
-                            </TableRow>)
+                        (isLoading 
+                            ? <CircularProgress className={classes.progress} />
+                            : tvShows.map((tvShow, index) => 
+                                <TableRow key={index} className={classes.row}>
+                                    <CustomTableCell>{tvShow.name}</CustomTableCell>
+                                    <CustomTableCell>{tvShow.popularity}</CustomTableCell>
+                                </TableRow>)
+                        )
                     }
                     </TableBody>
                 </Table>
@@ -54,12 +57,16 @@ const styles = theme => ({
         '&:nth-of-type(odd)': {
           backgroundColor: theme.palette.background.default,
         },
+    },
+    progress: {
+        margin: theme.spacing.unit * 2
     }
 });
 
 const mapStateToProps = ({tvShows}) => {
     return {
-        tvShows
+        tvShows,
+        isLoading: (tvShows === undefined || !tvShows.length)
     }
 }
 
