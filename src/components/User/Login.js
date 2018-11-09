@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Grid, Button, Typography } from '@material-ui/core'
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
+import Camera from './Camera'
 //import { login } from '../store'
 
 class Login extends Component {
@@ -14,13 +15,11 @@ class Login extends Component {
             error: ''
         }
         this.handleLogin = this.handleLogin.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+        this.handleSetImage = this.handleSetImage.bind(this)
     }
 
-    handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value
-        })
+    handleSetImage(image) {
+        this.setState({image})
     }
 
     handleLogin(event) {
@@ -38,13 +37,13 @@ class Login extends Component {
     render () {
 
         const { image, error } = this.state
-        const { handleChange, handleLogin } = this
+        const { handleSetImage, handleLogin } = this
 
         return (
             <div style={{marginTop: 25, marginBottom: 25, height: "80vh"}}>
                 <Grid container justify="center"  >
                     <Grid item>
-                        <AccountBoxIcon style={{fontSize: "25vh"}} />
+                        <Camera image={image} setImage={handleSetImage} />
                     </Grid>
                 </Grid>
                 <Grid container justify="center"  >
@@ -74,10 +73,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         //login: (credentials) => dispatch(login(credentials)),
     } 
-}
-
-const styles = {
-    element: { margin: 10 }
 }
 
 export default connect(null, mapDispatchToProps)(Login)

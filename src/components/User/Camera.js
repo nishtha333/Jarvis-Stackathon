@@ -48,18 +48,18 @@ class Camera extends React.Component {
 
         return (
             <IconButton onClick={this.handleClick}>
-                {
-                    this.state.camera 
-                        ?   <div style={cameraStyles}>
-                            {
-                                this.state.image.length > 0 
-                                    ? <img style={{ marginTop: '-30px', marginLeft: '-200px' }} src={this.state.image} />           
-                                    : <Webcam audio={false} style={{ marginTop: '-90px', marginLeft: '-200px' }}
-                                        ref={this.setRef} screenshotFormat="image/png" />
-                            }
-                            </div>
-                        : <AccountCircle style={{ fontSize: 230 }} />
-                }
+            {
+                this.state.camera 
+                    ?   <div style={cameraStyles}>
+                        {
+                            this.state.image.length > 0 
+                                ? <img style={{ marginTop: '-30px', marginLeft: '-200px' }} src={this.state.image} />           
+                                : <Webcam audio={false} style={{ marginTop: '-90px', marginLeft: '-200px' }}
+                                    ref={this.setRef} screenshotFormat="image/png" />
+                        }
+                        </div>
+                    : <AccountCircle style={{ fontSize: 230 }} />
+            }
             </IconButton>
         )
     }

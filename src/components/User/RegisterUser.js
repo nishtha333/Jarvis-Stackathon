@@ -15,7 +15,7 @@ class RegisterUser extends Component {
             lastName: '',
             image: '',
             error: '',
-            }
+        }
 
         this.handleRegistration = this.handleRegistration.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -78,7 +78,7 @@ class RegisterUser extends Component {
                                             Error processing request. Please try again
                                         </Typography>
                                 }
-                                </form>
+                            </form>
                         </Paper>
                     </Grid>
                 </Grid>
