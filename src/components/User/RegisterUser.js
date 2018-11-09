@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Grid, Button, TextField, Typography, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import PropTypes from 'prop-types';
 //import { addUser } from '../store';
 
@@ -55,6 +56,7 @@ class RegisterUser extends Component {
                                 <TextField required id="lastName" label="Last Name" variant="outlined"
                                     className={classes.element} value={lastName} onChange={handleChange('lastName')} />
 
+                                <AccountBoxIcon style={{fontSize: "25vh"}} />
 
                                 <Button variant="contained" className={classes.button} onClick={handleRegistration} 
                                     disabled={ !firstName || !lastName || !image }>

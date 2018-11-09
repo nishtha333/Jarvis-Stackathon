@@ -2,11 +2,11 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
-import Weather from './Weather'
-import News from './News'
-import Stocks from './Stocks'
-import Movies from './Movies'
-import TvShows from './TvShows'
+import Weather from './Widgets/Weather'
+import News from './Widgets/News'
+import Stocks from './Widgets/Stocks'
+import Movies from './Widgets/Movies'
+import TvShows from './Widgets/TvShows'
 
 class Home extends Component {
 
