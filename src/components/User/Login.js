@@ -24,14 +24,12 @@ class Login extends Component {
 
     handleLogin(event) {
         const { image } = this.state
-        /*
         event.preventDefault()
         this.props.login({ image })
             .then(() => this.props.history.push('/'))
             .catch(error => {
                 this.setState({ error: error.message })
             })
-        */
     }
 
     render () {
@@ -71,7 +69,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        //login: (credentials) => dispatch(login(credentials)),
+        login: (image) => dispatch(login(image)),
     } 
 }
 

@@ -5,7 +5,7 @@ import { Grid, Button, TextField, Typography, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Camera from './Camera'
-//import { addUser } from '../store';
+import { addUser } from '../../store';
 
 class RegisterUser extends Component {
     constructor() {
@@ -31,16 +31,16 @@ class RegisterUser extends Component {
     }
 
     handleRegistration(event) {
-        const { firstName, lastName, image } = this.state
         event.preventDefault()
-        /*this.props
-            .addUser({ firstName, lastName })
+
+        const { firstName, lastName, image } = this.state
+        this.props.addUser({ firstName, lastName, image })
             .then(() => this.props.history.push('/registerSuccess'))
             .catch(error => {
                 console.log(error.errors);
                 this.setState({ error: error.message });
-            });
-        */
+            }
+        )
     }
 
     render() {

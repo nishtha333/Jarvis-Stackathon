@@ -5,9 +5,11 @@ const app = express();
 app.use("/dist", express.static(path.join(__dirname, "..", "dist")));
 
 app.use('/api/weather', require('./api/weather'));
+app.use('/api/users', require('./api/users'));
+app.use('/api/auth', require('./api/auth'));
 
 app.get('/', (req, res, next) => {
-    res.sendFile(path.join(__dirname, "..", "index.html"))
+    res.sendFile(path.join(__dirname, "..", "index.html"));
 });
 
 app.use((req, res, next) => {

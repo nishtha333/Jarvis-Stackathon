@@ -6,18 +6,21 @@ import { newsReducer, getNews } from './reducers/news'
 import { stocksReducer, getStocks } from './reducers/stocks'
 import { moviesReducer, getMovies } from './reducers/movies'
 import { tvShowsReducer, getTvShows } from './reducers/tvShows'
+import { authenticatedUserReducer, exchangeTokenForAuth, addUser, login, logout } from './reducers/authenticatedUser';
 
 const store = createStore(combineReducers({
     weather: weatherReducer,
     news: newsReducer,
     stocks: stocksReducer,
     movies: moviesReducer,
-    tvShows: tvShowsReducer
+    tvShows: tvShowsReducer,
+    authenticatedUser: authenticatedUserReducer
 }), applyMiddleware(logger, thunk))
 
 
 const init = () => {
     return (dispatch) => {
+        dispatch(exchangeTokenForAuth())
         dispatch(getWeather())
         dispatch(getNews())
         dispatch(getStocks())
@@ -26,6 +29,6 @@ const init = () => {
     }
 }
 
-export { init } 
+export { init, addUser, login, logout } 
 
 export default store

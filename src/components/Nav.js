@@ -5,7 +5,7 @@ import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Typography } from 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-//import { logout } from '../store'
+import { logout } from '../store'
 
 class Nav extends Component {
 
@@ -28,11 +28,9 @@ class Nav extends Component {
     }
 
     handleLogout() {
-        /*
         this.props.logout()
         this.handleProfileMenuClose()
         this.props.history.push('/')
-        */
     }
 
     render() {
@@ -64,12 +62,11 @@ class Nav extends Component {
                             <img src="/dist/logo.png"/>
                         </Link>                 
                         {
-                            //!authenticatedUser.id 
-                                //?  
-                                <Button to="/login" component= {Link}>
-                                    <Typography variant="subheading" className={classes.login}>Login</Typography>
-                                </Button> 
-                                //: loggedInUserSettings()
+                            !authenticatedUser.id 
+                                ?   <Button to="/login" component= {Link}>
+                                        <Typography variant="subheading" className={classes.login}>Login</Typography>
+                                    </Button> 
+                                : loggedInUserSettings()
                         } 
                     </Toolbar>
                 </AppBar>
@@ -78,21 +75,21 @@ class Nav extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (authenticatedUser) => {
     return {
-        //authenticatedUser
+        authenticatedUser
     }
 }
 
 const mapDispatchToProps = (dispatch ) => {
     return {
-        //logout: () => dispatch(logout())
+        logout: () => dispatch(logout())
     }
 }
 
 Nav.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
 
 const styles = {
     root: {
