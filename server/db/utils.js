@@ -27,18 +27,15 @@ const uploadImageToS3 = async (image, name) => {
             await S3.createBucket({ Bucket: AWS_S3_BUCKET_NAME}).promise();
         }
 
-        const result = await S3.putObject({
+        await S3.putObject({
             Bucket: AWS_S3_BUCKET_NAME,
             Body,
             ContentType: `image/${extension}`,
             Key
         }).promise();
 
-        console.log("Loading to S3");
-        console.log(result);
         return {
-            url: `https://s3.amazonaws.com/${AWS_S3_BUCKET_NAME}/${Key}`,
-            imageName: Key
+            imageKey: Key
         }
     }
     catch(ex) {
@@ -62,8 +59,7 @@ const uploadImageToFaceCollection = async (imageName) => {
             }
         }).promise();
         return {
-            faceId: face.FaceRecords[0].Face.FaceId,
-            imageId: face.FaceRecords[0].Face.ImageId
+            faceId: face.FaceRecords[0].Face.FaceId
         }
     }
     catch(ex) {
@@ -73,16 +69,18 @@ const uploadImageToFaceCollection = async (imageName) => {
 
 const searchFaceByImageInCollection = async (image) => {
     try {
+        const regex = /data:image\/(\w+);base64,(.*)/
+        const matches = regex.exec(image);
+        const Bytes = new Buffer(matches[2], 'base64');
+
         const result = await Rekognition.searchFacesByImage({
             CollectionId: AWS_REKOGNITION_COLLECTION_ID,
             FaceMatchThreshold: AWS_FACE_MATCH_THRESHOLD,
             MaxFaces: 1,
-            Image: {
-                Bytes: image,
-            }
+            Image: { Bytes }
         }).promise();
-        console.log("Search for Face")
-        console.log(result);
+        
+        return (result.FaceMatches[0].Face.FaceId);
     }
     catch(ex) {
         throw ex;

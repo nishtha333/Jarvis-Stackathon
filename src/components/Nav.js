@@ -42,13 +42,13 @@ class Nav extends Component {
         const loggedInUserSettings = () => {
             return (
                 <Fragment>
-                    <IconButton onClick={ handleProfileMenu } 
+                    <IconButton onClick={ handleProfileMenu } className={classes.status}
                             aria-owns={isOpen ? 'profile-menu' : null} aria-haspopup="true">
                         <AccountCircleIcon />
                     </IconButton>
                     <Menu id="profile-menu" anchorEl={anchorEl} open={isOpen} onClick={handleProfileMenuClose} >
                         <MenuItem to={`/users/${authenticatedUser.id}/profile`} component={Link} onClick={handleProfileMenuClose} >Account</MenuItem>
-                        <MenuItem onClick={handleLogout} >Logout</MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                 </Fragment>
             )
@@ -64,7 +64,7 @@ class Nav extends Component {
                         {
                             !authenticatedUser.id 
                                 ?   <Button to="/login" component= {Link}>
-                                        <Typography variant="subheading" className={classes.login}>Login</Typography>
+                                        <Typography variant="subheading" className={classes.status}>Login</Typography>
                                     </Button> 
                                 : loggedInUserSettings()
                         } 
@@ -75,7 +75,7 @@ class Nav extends Component {
     }
 }
 
-const mapStateToProps = (authenticatedUser) => {
+const mapStateToProps = ({authenticatedUser}) => {
     return {
         authenticatedUser
     }
@@ -98,7 +98,7 @@ const styles = {
     title: {
         flexGrow: 1
     },
-    login: {
+    status: {
         color: "white"
     }
 }

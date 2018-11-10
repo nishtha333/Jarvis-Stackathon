@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Grid, Button, Typography } from '@material-ui/core'
-import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import Camera from './Camera'
-//import { login } from '../store'
+import { login } from '../../store'
 
 class Login extends Component {
 
@@ -69,7 +68,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: (image) => dispatch(login(image)),
+        login: (data) => dispatch(login(data)),
     } 
 }
 

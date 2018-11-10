@@ -8,19 +8,18 @@ const addUser = (user) => {
     return (dispatch) => {
         return axios.post('/api/users', user)
             .then(response => response.data)
-            .then(() => dispatch(login(user.image)))
             .catch(error => {
                 throw error
             })
         }
   }
 
-const login = (image) => {
+const login = (data) => {
     return (dispatch) => {
-        return axios.post('/api/auth', image)
+        return axios.post('/api/auth', data)
             .then(response => response.data)
-            .then( data => {
-                window.localStorage.setItem('token', data.token);
+            .then( result => {
+                window.localStorage.setItem('token', result.token);
                 dispatch(exchangeTokenForAuth());
             })
             .catch(error => {

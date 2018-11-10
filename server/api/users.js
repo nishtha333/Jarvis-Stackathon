@@ -18,17 +18,17 @@ router.get("/:id", (req, res, next) => {
 });
 
 
-//Upload Image Data to S3. Add Image to FaceCollection. Store ImageUrl, FaceId, ImageId in DB.
+//Upload Image Data to S3. Add Image to FaceCollection. Store ImageName, FaceId in DB.
 router.post("/", (req, res, next) => {
     const { firstName, lastName, image } = req.body;
-    let imageUrl;
+    let imageName;
 
     uploadImageToS3(image, firstName.concat(lastName))
-        .then(({ url, imageName }) => {
-            imageUrl = url; 
-            return uploadImageToFaceCollection(imageName);
-        }).then(({ faceId, imageId }) => {
-            return User.create({ firstName, lastName, imageUrl, faceId, imageId })               
+        .then(({ imageKey }) => {
+            imageName = imageKey; 
+            return uploadImageToFaceCollection(imageKey);
+        }).then(({ faceId }) => {
+            return User.create({ firstName, lastName, imageName, faceId })               
         }).then(user => res.status(201).send(user))
         .catch(next);
 });

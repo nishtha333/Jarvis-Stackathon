@@ -11,7 +11,7 @@ const isAuthenticated = (req, res, next) => {
 
     let faceId;
     try {
-        faceId = jwt.decode(token, process.env.JWT_SECRET).faceId;
+        faceId = jwt.decode(token, process.env.JWT_SECRET).id;
     }
     catch(ex) {
         return next({ status: 401 });
