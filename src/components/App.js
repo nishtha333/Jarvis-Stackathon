@@ -28,7 +28,7 @@ class App extends Component {
                     <Route path="/register" component={RegisterUser} />
                     <Route path="/registerSuccess" component={RegistrationSuccessful} />
                     {/*<Route path="/users/:id/profile" component={Profile} />*/}
-                    <Route exact path="/" component={Home} />
+                    <Route exact path="/" render={({ history }) => <Home history={history} />} /> 
                 </Switch>
                 </Fragment>
             </Router>
@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
 
 App.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
 
 const styles = {
     "@global": {
@@ -53,6 +53,6 @@ const styles = {
             backgroundColor: "white"
         }
 	}
-};
+}
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(App))

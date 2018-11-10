@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Typography } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 import { logout } from '../store'
 
 class Nav extends Component {
