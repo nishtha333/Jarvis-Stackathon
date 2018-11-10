@@ -1,5 +1,5 @@
 node_modules
-dist
+dist/main.js
 package-lock.json
 env.js
 .DS_Store
