@@ -11,8 +11,10 @@ AWS.config = {
 
 const S3 =  new AWS.S3();
 const Rekognition = new AWS.Rekognition();
+const Polly = new AWS.Polly();
 
 module.exports = {
     S3,
-    Rekognition
+    Rekognition,
+    Polly
 };

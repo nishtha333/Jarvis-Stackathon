@@ -36,6 +36,12 @@ const User = conn.define('user', {
             notEmpty: true
         }
     },
+    audioName: {
+        type: conn.Sequelize.STRING,
+    },
+    audioUrl: {
+        type: conn.Sequelize.STRING,
+    },
     email: {
         type: conn.Sequelize.STRING,
         allowNull: true

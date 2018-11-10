@@ -1,4 +1,4 @@
-const { S3, Rekognition } = require('../AWS');
+const { S3, Rekognition, Polly } = require('../AWS');
 const { AWS_S3_BUCKET_NAME, AWS_REKOGNITION_COLLECTION_ID, AWS_FACE_MATCH_THRESHOLD } = require('../config'); 
 
 const checkBucketExists = async (bucket) => { 
@@ -61,7 +61,7 @@ const uploadImageToFaceCollection = async (imageName) => {
             }
         }).promise();
         return {
-            faceId: face.FaceRecords[0].Face.FaceId
+            id: face.FaceRecords[0].Face.FaceId
         }
     }
     catch(ex) {
@@ -89,8 +89,38 @@ const searchFaceByImageInCollection = async (image) => {
     }
 }
 
+const createAndUploadWelcomeMsg = async (firstName) => {
+    try {
+        
+        const Key = `${firstName}.mp3`
+        const speech = await Polly.synthesizeSpeech({
+            OutputFormat: "mp3",
+            Text: `Welcome ${firstName}`,
+            TextType: 'text',
+            VoiceId: 'Kimberly'
+        }).promise();
+
+        await S3.putObject({
+            Bucket: AWS_S3_BUCKET_NAME,
+            ACL: 'public-read',
+            Body: speech.AudioStream,
+            ContentType: `audio/mpeg`,
+            Key
+        }).promise();
+
+        return {
+            audioName: Key,
+            audioUrl: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${Key}`,
+        }        
+    }
+    catch(ex) {
+        throw ex;
+    }
+}
+
 module.exports = {
     uploadImageToS3,
     uploadImageToFaceCollection,
-    searchFaceByImageInCollection
+    searchFaceByImageInCollection,
+    createAndUploadWelcomeMsg
 }

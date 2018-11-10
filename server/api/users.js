@@ -1,4 +1,4 @@
-const { uploadImageToS3, uploadImageToFaceCollection } = require('../db/utils')
+const { uploadImageToS3, uploadImageToFaceCollection, createAndUploadWelcomeMsg } = require('../db/utils')
 const { User } = require('../db').models;
 const express = require('express');
 const router = express.Router();
@@ -19,17 +19,21 @@ router.get("/:id", (req, res, next) => {
 
 
 //Upload Image Data to S3. Add Image to FaceCollection. Store ImageName, FaceId in DB.
+//Create and Upload Welcome audio msg to S3 too
 router.post("/", (req, res, next) => {
     const { firstName, lastName, image } = req.body;
-    let imageName, imageUrl;
+    let imageName, imageUrl, faceId;
 
     uploadImageToS3(image, firstName.concat(lastName))
         .then(({ imageKey, url }) => {
             imageName = imageKey; 
             imageUrl = url;
             return uploadImageToFaceCollection(imageKey);
-        }).then(({ faceId }) => {
-            return User.create({ firstName, lastName, imageName, faceId, imageUrl })               
+        }).then(({id})  => {
+            faceId = id;
+            return createAndUploadWelcomeMsg(firstName)                 
+        }).then(({ audioName, audioUrl }) => {
+            return User.create({ firstName, lastName, imageName, faceId, imageUrl, audioName, audioUrl })  
         }).then(user => res.status(201).send(user))
         .catch(next);
 });

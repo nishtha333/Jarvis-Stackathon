@@ -11,7 +11,7 @@ class Nav extends Component {
     constructor() {
         super()
         this.state = {
-            anchorEl: null
+            anchorEl: null,
         }
         this.handleProfileMenu = this.handleProfileMenu.bind(this)
         this.handleProfileMenuClose = this.handleProfileMenuClose.bind(this)

@@ -19,8 +19,9 @@ const login = (data) => {
         return axios.post('/api/auth', data)
             .then(response => response.data)
             .then( result => {
-                window.localStorage.setItem('token', result.token);
-                dispatch(exchangeTokenForAuth());
+                window.localStorage.setItem('token', result.token)
+                new Audio(result.welcomeMsg).play()
+                dispatch(exchangeTokenForAuth())
             })
             .catch(error => {
                 throw error
@@ -30,7 +31,7 @@ const login = (data) => {
 
 const exchangeTokenForAuth = () => {
     return (dispatch) => {
-        const token = window.localStorage.getItem('token');
+        const token = window.localStorage.getItem('token')
         if(!token) {
             return 
         }
@@ -48,7 +49,7 @@ const exchangeTokenForAuth = () => {
   
 const logout = () => {
     return (dispatch) => {
-        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('token')
         dispatch(_setAuthenticatedUser({}))
     }
 }

@@ -18,7 +18,8 @@ router.post('/', (req, res, next) => {
                 return next({ status: 401 });
             }
             const token = jwt.encode({ id: user.faceId }, process.env.JWT_SECRET);
-            res.send({ token })
+            const welcomeMsg = user.audioUrl;
+            res.send({ token, welcomeMsg })
         }).catch(next);
 });
 
