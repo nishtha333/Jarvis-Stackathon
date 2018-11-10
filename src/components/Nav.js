@@ -1,8 +1,7 @@
 import React, { Fragment, Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Typography } from '@material-ui/core'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Typography, Avatar } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { logout } from '../store'
@@ -44,7 +43,11 @@ class Nav extends Component {
                 <Fragment>
                     <IconButton onClick={ handleProfileMenu } className={classes.status}
                             aria-owns={isOpen ? 'profile-menu' : null} aria-haspopup="true">
-                        <AccountCircleIcon />
+                        <Typography variant="subheading" className={classes.text}>
+                            {`Hello, ${authenticatedUser.firstName}`}
+                        </Typography>
+                        <Avatar src={authenticatedUser.imageUrl}
+                      />
                     </IconButton>
                     <Menu id="profile-menu" anchorEl={anchorEl} open={isOpen} onClick={handleProfileMenuClose} >
                         <MenuItem to={`/users/${authenticatedUser.id}/profile`} component={Link} onClick={handleProfileMenuClose} >Account</MenuItem>
@@ -100,6 +103,10 @@ const styles = {
     },
     status: {
         color: "white"
+    },
+    text: {
+        color: "white",
+        margin: 10
     }
 }
 

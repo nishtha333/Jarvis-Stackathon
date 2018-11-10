@@ -42,8 +42,8 @@ class Camera extends React.Component {
         const cameraStyles = {
             overflow: 'hidden',
             borderRadius: 500,
-            height: 230,
-            width: 230,
+            height: 400,
+            width: 400,
         }
 
         return (
@@ -54,11 +54,11 @@ class Camera extends React.Component {
                         {
                             this.state.image.length > 0 
                                 ? <img style={{ marginTop: '-30px', marginLeft: '-200px' }} src={this.state.image} />           
-                                : <Webcam audio={false} style={{ marginTop: '-90px', marginLeft: '-200px' }}
+                                : <Webcam audio={false} style={{ marginTop: '-80px', marginLeft: '-200px' }}
                                     ref={this.setRef} screenshotFormat="image/png" />
                         }
                         </div>
-                    : <AccountCircle style={{ fontSize: 230 }} />
+                    : <AccountCircle style={{ fontSize: 400 }} />
             }
             </IconButton>
         )

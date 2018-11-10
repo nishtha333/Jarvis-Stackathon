@@ -29,13 +29,15 @@ const uploadImageToS3 = async (image, name) => {
 
         await S3.putObject({
             Bucket: AWS_S3_BUCKET_NAME,
+            ACL: 'public-read',
             Body,
             ContentType: `image/${extension}`,
             Key
         }).promise();
 
         return {
-            imageKey: Key
+            imageKey: Key,
+            url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${Key}`
         }
     }
     catch(ex) {
@@ -79,7 +81,7 @@ const searchFaceByImageInCollection = async (image) => {
             MaxFaces: 1,
             Image: { Bytes }
         }).promise();
-        
+
         return (result.FaceMatches[0].Face.FaceId);
     }
     catch(ex) {

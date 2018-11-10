@@ -101,12 +101,12 @@ const styles = {
     root: {
         marginTop: 25, 
         marginBottom: 25, 
-        height: '80vh'
+        height: '90vh'
     },
     form: {
         display: 'flex', 
         flexDirection: 'column', 
-        width: '30vw', 
+        width: '40vw', 
         padding: '5vh 5vw 5vh 5vw'
     },
     element: { 

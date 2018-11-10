@@ -21,14 +21,15 @@ router.get("/:id", (req, res, next) => {
 //Upload Image Data to S3. Add Image to FaceCollection. Store ImageName, FaceId in DB.
 router.post("/", (req, res, next) => {
     const { firstName, lastName, image } = req.body;
-    let imageName;
+    let imageName, imageUrl;
 
     uploadImageToS3(image, firstName.concat(lastName))
-        .then(({ imageKey }) => {
+        .then(({ imageKey, url }) => {
             imageName = imageKey; 
+            imageUrl = url;
             return uploadImageToFaceCollection(imageKey);
         }).then(({ faceId }) => {
-            return User.create({ firstName, lastName, imageName, faceId })               
+            return User.create({ firstName, lastName, imageName, faceId, imageUrl })               
         }).then(user => res.status(201).send(user))
         .catch(next);
 });

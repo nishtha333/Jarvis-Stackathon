@@ -22,6 +22,13 @@ const User = conn.define('user', {
             notEmpty: true
         }
     },
+    imageUrl: {
+        type: conn.Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     faceId: {
         type: conn.Sequelize.STRING,
         allowNull: false,
