@@ -82,7 +82,7 @@ const searchFaceByImageInCollection = async (image) => {
             Image: { Bytes }
         }).promise();
 
-        return (result.FaceMatches[0].Face.FaceId);
+        return (result.FaceMatches[0] ? result.FaceMatches[0].Face.FaceId : null);
     }
     catch(ex) {
         throw ex;
