@@ -1,7 +1,9 @@
 const path = require('path');
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
+app.use(bodyParser.json({limit: '50mb'}));
 app.use("/dist", express.static(path.join(__dirname, "..", "dist")));
 
 app.use('/api/weather', require('./api/weather'));

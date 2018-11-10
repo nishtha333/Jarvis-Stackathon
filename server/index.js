@@ -11,6 +11,7 @@ const io = require('socket.io')(server);
 // handle sockets
 require('./socket')(io);
 
+
 const TIME_INTERVAL_FOR_REFRESH_REQUEST = process.env.TIME_INTERVAL_FOR_REFRESH_REQUEST || 30000;
 
 //Subscribe to Latest News
@@ -64,3 +65,10 @@ const sortByPopularity = (obj1, obj2) =>  (obj2.popularity - obj1.popularity);
             })
             .catch(error => console.log(error));
 //}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
+
+
+
+/*
+const conn = require('./db/conn');
+conn.sync({force: true});
+*/

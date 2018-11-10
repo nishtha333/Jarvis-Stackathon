@@ -1,3 +1,4 @@
+const { uploadImageToS3, uploadImageToFaceCollection } = require('../db/utils')
 const { User } = require('../db').models;
 const express = require('express');
 const router = express.Router();
@@ -16,17 +17,23 @@ router.get("/:id", (req, res, next) => {
         .catch(next);
 });
 
-/* TO DO. 
-- Image Data to be uploaded to S3. URL should then be saved to DB (imageUrl)
-- Image to be added to the FaceCollection and FaceID (result) should be saved in DB (faceId)
-*/
+
+//Upload Image Data to S3. Add Image to FaceCollection. Store ImageUrl, FaceId, ImageId in DB.
 router.post("/", (req, res, next) => {
-    User.create(req.body)
-        .then(user => res.status(201).send(user))
+    const { firstName, lastName, image } = req.body;
+    let imageUrl;
+
+    uploadImageToS3(image, firstName.concat(lastName))
+        .then(({ url, imageName }) => {
+            imageUrl = url; 
+            return uploadImageToFaceCollection(imageName);
+        }).then(({ faceId, imageId }) => {
+            return User.create({ firstName, lastName, imageUrl, faceId, imageId })               
+        }).then(user => res.status(201).send(user))
         .catch(next);
 });
 
-/* If new image is updated, need to update S3 and FaceCollection  and new FaceID should be saved*/
+/* TO DO: If new image is updated, need to update S3 and FaceCollection  and new FaceID should be saved*/
 router.put("/:id", (req, res, next) => {
     User.findById(req.params.id)
         .then(user => user.update(req.body))
@@ -34,7 +41,7 @@ router.put("/:id", (req, res, next) => {
         .catch(next);
 });
 
-/*Remove the image from S3 bucket and Face Collection */
+/*TO DO: Remove the image from S3 bucket and Face Collection */
 router.delete("/:id", (req, res, next) => {
     User.findById(req.params.id)
         .then(user => user.destroy())
