@@ -1,4 +1,5 @@
-const { uploadImageToS3, uploadImageToFaceCollection, createAndUploadWelcomeMsg } = require('../db/utils')
+const { uploadImageToS3, uploadImageToFaceCollection, 
+    createAndUploadWelcomeMsg, searchFaceByImageInCollection } = require('../db/utils')
 const { User } = require('../db').models;
 const express = require('express');
 const router = express.Router();
@@ -24,8 +25,14 @@ router.post("/", (req, res, next) => {
     const { firstName, lastName, image } = req.body;
     let imageName, imageUrl, faceId;
 
-    uploadImageToS3(image, firstName.concat(lastName))
-        .then(({ imageKey, url }) => {
+    searchFaceByImageInCollection(image)
+        .then(response => {
+            if(response) {
+                throw new Error("User already registered. Please login..")
+            } else {
+                return uploadImageToS3(image, firstName.concat(lastName))
+            }
+        }).then(({ imageKey, url }) => {
             imageName = imageKey; 
             imageUrl = url;
             return uploadImageToFaceCollection(imageKey);

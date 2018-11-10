@@ -37,7 +37,6 @@ class RegisterUser extends Component {
         this.props.addUser({ firstName, lastName, image })
             .then(() => this.props.history.push('/registerSuccess'))
             .catch(error => {
-                console.log(error.errors);
                 this.setState({ error: error.message });
             }
         )
@@ -75,7 +74,7 @@ class RegisterUser extends Component {
                                 {
                                     error && 
                                         <Typography variant="subheading" className={classes.error}>
-                                            Error processing request. Please try again
+                                            {error}
                                         </Typography>
                                 }
                             </form>
