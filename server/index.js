@@ -68,7 +68,7 @@ const sortByPopularity = (obj1, obj2) =>  (obj2.popularity - obj1.popularity);
 
 
 
-/*
-const conn = require('./db/conn');
-conn.sync({force: true});
-*/
+if (process.env.SYNC_DB) {
+      const conn = require('./db/conn');
+      conn.sync({force: true});
+}
