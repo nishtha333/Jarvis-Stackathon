@@ -95,9 +95,9 @@ const createAndUploadWelcomeMsg = async (firstName) => {
         const Key = `${firstName}.mp3`
         const speech = await Polly.synthesizeSpeech({
             OutputFormat: "mp3",
-            Text: `Welcome ${firstName}`,
+            Text: `Hello ${firstName}. Welcome to Jarvis`,
             TextType: 'text',
-            VoiceId: 'Kimberly'
+            VoiceId: 'Amy'
         }).promise();
 
         await S3.putObject({
