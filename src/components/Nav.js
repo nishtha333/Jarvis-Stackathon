@@ -50,7 +50,7 @@ class Nav extends Component {
                       />
                     </IconButton>
                     <Menu id="profile-menu" anchorEl={anchorEl} open={isOpen} onClick={handleProfileMenuClose} >
-                        <MenuItem to={`/users/${authenticatedUser.id}/profile`} component={Link} onClick={handleProfileMenuClose} >Account</MenuItem>
+                        <MenuItem to={`/profile`} component={Link} onClick={handleProfileMenuClose} >Account</MenuItem>
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                 </Fragment>

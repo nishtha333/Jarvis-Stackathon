@@ -9,15 +9,15 @@ const isAuthenticated = (req, res, next) => {
         return next();
     }
 
-    let faceId;
+    let id;
     try {
-        faceId = jwt.decode(token, process.env.JWT_SECRET).id;
+        id = jwt.decode(token, process.env.JWT_SECRET).id;
     }
     catch(ex) {
         return next({ status: 401 });
     }
 
-    User.findOne({ where: { faceId } })
+    User.findById(id)
         .then(user => {
             req.user = user;
             next();

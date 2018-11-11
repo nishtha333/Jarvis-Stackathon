@@ -6,7 +6,8 @@ import { newsReducer, getNews } from './reducers/news'
 import { stocksReducer, getStocks } from './reducers/stocks'
 import { moviesReducer, getMovies } from './reducers/movies'
 import { tvShowsReducer, getTvShows } from './reducers/tvShows'
-import { authenticatedUserReducer, exchangeTokenForAuth, addUser, login, logout } from './reducers/authenticatedUser';
+import { authenticatedUserReducer, exchangeTokenForAuth, addUser, login, logout, 
+    updateUser } from './reducers/authenticatedUser';
 
 const store = createStore(combineReducers({
     weather: weatherReducer,
@@ -29,6 +30,6 @@ const init = () => {
     }
 }
 
-export { init, addUser, login, logout } 
+export { init, addUser, login, logout, updateUser } 
 
 export default store

@@ -1,5 +1,5 @@
 const { uploadImageToS3, uploadImageToFaceCollection, 
-    createAndUploadWelcomeMsg, searchFaceByImageInCollection } = require('../db/utils')
+    createAndUploadWelcomeMsg, searchFaceByImageInCollection, deleteImageFromFaceCollection } = require('../db/utils')
 const { User } = require('../db').models;
 const express = require('express');
 const router = express.Router();
@@ -46,11 +46,39 @@ router.post("/", (req, res, next) => {
 });
 
 /* TO DO: If new image is updated, need to update S3 and FaceCollection  and new FaceID should be saved*/
-router.put("/:id", (req, res, next) => {
-    User.findById(req.params.id)
-        .then(user => user.update(req.body))
-        .then(user => res.send(user))
-        .catch(next);
+router.put("/", async (req, res, next) => {
+    const { firstName, lastName, image, email, address } = req.body
+    let imageName, imageUrl, faceId, audioName, audioUrl
+
+    try {
+        faceId = req.body.faceId
+        const user = await User.findOne({ where: { faceId } });
+        imageName = user.imageName;
+        imageUrl = user.imageUrl;
+        audioName = user.audioName;
+        audioUrl = user.audioUrl;
+
+        if(image.length) {
+            await deleteImageFromFaceCollection(faceId);
+            const result = await uploadImageToS3(image, firstName.concat(lastName));
+            imageName = result.imageKey;
+            imageUrl = result.url;
+            const { id } = await uploadImageToFaceCollection(imageName);
+            faceId = id;
+        } 
+
+        if(user.firstName != firstName) {
+            const audio = await createAndUploadWelcomeMsg(firstName);
+            audioName = audio.audioName;
+            audioUrl = audio.audioUrl;             
+        }                       
+        await user.update({ firstName, lastName, imageName, faceId, imageUrl, email, address, audioName, audioUrl });
+        const update = await User.findOne({ where: { faceId } });
+        res.send(update);
+    }
+    catch(error) {
+        next(error);
+    }
 });
 
 /*TO DO: Remove the image from S3 bucket and Face Collection */

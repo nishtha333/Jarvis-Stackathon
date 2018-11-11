@@ -8,6 +8,8 @@ import Home from './Home'
 import Nav from './Nav'
 import Login from './User/Login'
 import RegisterUser from './User/RegisterUser'
+import Profile from './User/Profile'
+import ProfileUpdatedSuccess from './User/ProfileUpdatedSuccess'
 import RegistrationSuccessful from './User/RegistrationSuccessful'
 import { init } from '../store'
 
@@ -27,7 +29,8 @@ class App extends Component {
                     <Route path="/login" render={({ history }) => <Login history={history} />}/>
                     <Route path="/register" component={RegisterUser} />
                     <Route path="/registerSuccess" component={RegistrationSuccessful} />
-                    {/*<Route path="/users/:id/profile" component={Profile} />*/}
+                    <Route path="/profile" component={Profile} />
+                    <Route path="/profileUpdated" component={ProfileUpdatedSuccess} />
                     <Route exact path="/" render={({ history }) => <Home history={history} />} /> 
                 </Switch>
                 </Fragment>

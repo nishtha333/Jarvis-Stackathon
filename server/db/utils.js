@@ -69,6 +69,13 @@ const uploadImageToFaceCollection = async (imageName) => {
     }
 }
 
+const deleteImageFromFaceCollection = (faceId) => {
+    return Rekognition.deleteFaces({ 
+            CollectionId: AWS_REKOGNITION_COLLECTION_ID, 
+            FaceIds: [faceId]
+    }).promise();
+}
+
 const searchFaceByImageInCollection = async (image) => {
     try {
         const regex = /data:image\/(\w+);base64,(.*)/
@@ -122,5 +129,6 @@ module.exports = {
     uploadImageToS3,
     uploadImageToFaceCollection,
     searchFaceByImageInCollection,
-    createAndUploadWelcomeMsg
+    createAndUploadWelcomeMsg,
+    deleteImageFromFaceCollection
 }
