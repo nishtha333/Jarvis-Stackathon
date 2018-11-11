@@ -7,6 +7,7 @@ import { CssBaseline } from '@material-ui/core';
 import Home from './Home'
 import Nav from './Nav'
 import Login from './User/Login'
+import BruteForce from './User/BruteForce'
 import RegisterUser from './User/RegisterUser'
 import Profile from './User/Profile'
 import ProfileUpdatedSuccess from './User/ProfileUpdatedSuccess'
@@ -33,6 +34,7 @@ class App extends Component {
                 <Route path="/" render={({ history }) => <Nav history={history} />} />
                 <Switch>
                     <Route path="/login" render={({ history }) => <Login history={history} />}/>
+                    <Route path="/bruteForce" render={({ history }) => <BruteForce history={history} />}/>
                     <Route path="/register" component={RegisterUser} />
                     <Route path="/registerSuccess" component={RegistrationSuccessful} />
                     <Route path="/profile" component={Profile} />

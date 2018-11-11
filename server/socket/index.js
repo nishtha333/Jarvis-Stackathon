@@ -19,7 +19,7 @@ module.exports = io => {
     }
 
     socket.on('subscribe-stocks', stocks => {
-      if(stocks.length) {
+      if(stocks && stocks.length) {
         MemoryData.setStockListForSocket(socket.id, stocks);
         requestStockUpdate(io, stocks);
       } else if(MemoryData.getStockListForSocket(socket.id)) {

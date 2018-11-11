@@ -52,6 +52,21 @@ const login = (data) => {
         }
 }
 
+const bruteForce = (credentials) => {
+    return (dispatch) => {
+        return axios.post('/api/auth/bruteForce', credentials)
+            .then(response => response.data)
+            .then( result => {
+                window.localStorage.setItem('token', result.token)
+                new Audio(result.welcomeMsg).play()
+                dispatch(exchangeTokenForAuth())
+            })
+            .catch(error => {
+                throw error
+            })
+        }
+}
+
 const exchangeTokenForAuth = () => {
     return (dispatch) => {
         const token = window.localStorage.getItem('token')
@@ -88,4 +103,4 @@ const authenticatedUserReducer = (state = {}, action) => {
     }
 }
 
-export { login, logout, exchangeTokenForAuth, addUser, updateUser, deleteUser, authenticatedUserReducer }
+export { login, logout, exchangeTokenForAuth, addUser, updateUser, deleteUser, bruteForce, authenticatedUserReducer }
