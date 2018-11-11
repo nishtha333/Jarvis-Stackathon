@@ -15,7 +15,7 @@ class Weather extends Component {
                 <Typography variant="title" className={classes.title}>Current Weather</Typography>
                 {
                     ((isLoading === undefined) || isLoading) ? (<CircularProgress className={classes.progress} />)
-                        : (error ? <Typography variant="h4">Error Loading Weather Data...</Typography>
+                        : (error ? <Typography variant="subtitle">Error Loading Weather Data...</Typography>
                                 : <WeatherCard result={details} />
                         )
                 }

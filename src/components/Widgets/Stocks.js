@@ -10,6 +10,10 @@ class Stocks extends Component {
         const { stocks, classes, isLoading } = this.props
         //price_date, last_price, close_price, percent_change, open_price, high_price, low_price
         
+        if(!Object.keys(stocks).length) {
+            return null
+        }
+
         return (
             <Paper>
                 <Table>

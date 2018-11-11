@@ -50,6 +50,10 @@ const User = conn.define('user', {
         type: conn.Sequelize.STRING,
         allowNull: true
     },
+    stocks: {
+        type: conn.Sequelize.STRING,
+        allowNull: true
+    },
 });
 
 module.exports = {

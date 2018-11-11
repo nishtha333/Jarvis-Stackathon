@@ -1,9 +1,10 @@
 class Data {
     constructor() {
         this._news = {},
-        this._stocks = [],
+        this._stocks = {},
         this._movies = [],
-        this._tv = []
+        this._tv = [],
+        this._stocksListPerSocket = {}
     }
 
     get news() {
@@ -27,7 +28,7 @@ class Data {
                 result[input.identifier] = { ...current, [input.item.trim()]: input.value }
             }
             return result;
-        }, {})
+        }, this._stocks)
     }
 
     get movies() {
@@ -44,6 +45,31 @@ class Data {
 
     set tv(data) {
         this._tv = data;   
+    }
+
+    getStockListForSocket(socketId, stocksData) {
+        if(!this._stocksListPerSocket[socketId]) {
+            return {}
+        }
+        const stocksForSocket = this._stocksListPerSocket[socketId].split(',');
+        return stocksForSocket.reduce((result, input) => {
+            if(!result[input]) {
+                result[input] = stocksData[input];
+            }
+            return result;
+        }, {})
+    }
+
+    setStockListForSocket(socketId, data) {
+        this._stocksListPerSocket[socketId] = data;   
+    }
+
+    removeSocket(socketId) {
+        delete this._stocksListPerSocket[socketId];
+    }
+
+    getAllSocketsIds() {
+        return Object.keys(this._stocksListPerSocket);
     }
 }
 

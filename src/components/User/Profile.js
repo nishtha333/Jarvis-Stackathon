@@ -16,6 +16,7 @@ class Profile extends Component {
             imageUrl: '',
             email: '',
             address: '',
+            stocks: '',
             error: '',
         }
         this.handleUpdate = this.handleUpdate.bind(this)
@@ -26,10 +27,11 @@ class Profile extends Component {
     }
 
     loadState() {
-        const { firstName, lastName, imageUrl, email, address } = this.props.authenticatedUser
+        const { firstName, lastName, imageUrl, email, address, stocks } = this.props.authenticatedUser
         this.setState({ firstName, lastName, imageUrl, 
             email: email ? email : '', 
             address: address ? address: '',
+            stocks: stocks ? stocks: '',
             image: '' 
         })
     }
@@ -55,8 +57,8 @@ class Profile extends Component {
     handleUpdate(event) {
         event.preventDefault()
         const { faceId } = this.props.authenticatedUser
-        const { firstName, lastName, image, email, address } = this.state
-        this.props.updateUser({firstName, lastName, image, email, address, faceId})
+        const { firstName, lastName, image, email, address, stocks } = this.state
+        this.props.updateUser({firstName, lastName, image, email, address, faceId, stocks})
             .then(() => this.props.history.push('/profileUpdated'))
             .catch(error => {
                 this.setState({ error: error.message });
@@ -76,7 +78,7 @@ class Profile extends Component {
     }
 
     render() {
-        const { firstName, lastName, image, email, address, error, imageUrl } = this.state
+        const { firstName, lastName, image, email, address, error, imageUrl, stocks } = this.state
         const { handleChange, handleUpdate, handleDelete, handleSetImage } = this
         const { classes } = this.props
 
@@ -98,6 +100,9 @@ class Profile extends Component {
 
                                 <TextField required id="address" label="Address" variant="outlined"
                                     className={classes.element} value={address} onChange={handleChange('address')} />
+
+                                <TextField required id="stocks" label="Stocks (Comma Separated)" variant="outlined"
+                                    className={classes.element} value={stocks} onChange={handleChange('stocks')} />
 
                                 <Camera image={imageUrl ? imageUrl : image} setImage={handleSetImage} />
 

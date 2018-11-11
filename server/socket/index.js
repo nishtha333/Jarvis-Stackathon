@@ -1,15 +1,13 @@
 const MemoryData = require('./data');
+const { requestStockUpdate } = require('./utils');
 
 module.exports = io => {
 
   io.on('connection', socket => {
     console.log(socket.id, ' has made a connection to the server!');
+
     if(MemoryData.news) {
       socket.emit('update-news', MemoryData.news);
-    }
-
-    if(MemoryData.stocks) {
-      socket.emit('update-stocks', MemoryData.stocks);
     }
 
     if(MemoryData.movies) {
@@ -20,8 +18,18 @@ module.exports = io => {
       socket.emit('update-tv', MemoryData.tv);
     }
 
+    socket.on('subscribe-stocks', stocks => {
+      if(stocks.length) {
+        MemoryData.setStockListForSocket(socket.id, stocks);
+        requestStockUpdate(io, stocks);
+      } else if(MemoryData.getStockListForSocket(socket.id)) {
+        MemoryData.removeSocket(socket.id);
+      }
+    });
+
     socket.on('disconnect', function() {
       console.log(`Client with Socket Id ${socket.id} disconnected`);
+      MemoryData.removeSocket(socket.id);
     });
 
   });

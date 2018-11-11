@@ -7,7 +7,14 @@ const getStocks = () => {
     return (dispatch) => {
         socket.on('update-stocks', message => {
             dispatch(_setStocks(message))
-          })
+        })
+    }
+}
+
+const subscribeStocks = (stocks) => {
+    return (dispatch) => {
+        console.log("client calling subscribe stocks")
+        socket.emit('subscribe-stocks', stocks);
     }
 }
 
@@ -20,4 +27,4 @@ const stocksReducer = (state = {}, action) => {
     }
 }
 
-export { stocksReducer, getStocks }
+export { stocksReducer, getStocks, subscribeStocks }

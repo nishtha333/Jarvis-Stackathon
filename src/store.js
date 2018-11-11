@@ -3,7 +3,7 @@ import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { weatherReducer, getWeather } from './reducers/weather'
 import { newsReducer, getNews } from './reducers/news'
-import { stocksReducer, getStocks } from './reducers/stocks'
+import { stocksReducer, getStocks, subscribeStocks } from './reducers/stocks'
 import { moviesReducer, getMovies } from './reducers/movies'
 import { tvShowsReducer, getTvShows } from './reducers/tvShows'
 import { authenticatedUserReducer, exchangeTokenForAuth, addUser, login, logout, 
@@ -30,6 +30,6 @@ const init = () => {
     }
 }
 
-export { init, addUser, login, logout, updateUser, deleteUser } 
+export { init, addUser, login, logout, updateUser, deleteUser, subscribeStocks } 
 
 export default store

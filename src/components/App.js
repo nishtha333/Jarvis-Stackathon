@@ -11,12 +11,18 @@ import RegisterUser from './User/RegisterUser'
 import Profile from './User/Profile'
 import ProfileUpdatedSuccess from './User/ProfileUpdatedSuccess'
 import RegistrationSuccessful from './User/RegistrationSuccessful'
-import { init } from '../store'
+import { init, subscribeStocks } from '../store'
 
 class App extends Component {
 
     componentDidMount() {
         this.props.init()
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.authenticatedUser.stocks !== this.props.authenticatedUser.stocks) {
+            this.props.subscribeStocks(this.props.authenticatedUser.stocks)
+        }
     }
 
     render() {
@@ -39,9 +45,16 @@ class App extends Component {
     }
 }
 
+const mapStateToProps = ({authenticatedUser}) => {
+    return {
+        authenticatedUser
+    }   
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
-        init: () =>  dispatch(init())
+        init: () =>  dispatch(init()),
+        subscribeStocks: (stocks) => dispatch(subscribeStocks(stocks)),
     }   
 }
 
@@ -58,4 +71,4 @@ const styles = {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(App))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App))

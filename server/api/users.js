@@ -48,7 +48,7 @@ router.post("/", (req, res, next) => {
 
 //If new image is updated, need to update S3 and FaceCollection and new FaceID should be saved
 router.put("/", async (req, res, next) => {
-    const { firstName, lastName, image, email, address } = req.body
+    const { firstName, lastName, image, email, address, stocks } = req.body
     let imageName, imageUrl, faceId, audioName, audioUrl
 
     try {
@@ -76,7 +76,7 @@ router.put("/", async (req, res, next) => {
             audioUrl = audio.audioUrl;             
         }                       
 
-        const update = await user.update({ firstName, lastName, imageName, faceId, imageUrl, email, 
+        const update = await user.update({ firstName, lastName, imageName, faceId, imageUrl, email, stocks,
             address, audioName, audioUrl });
         res.send(update);
     }
