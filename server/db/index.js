@@ -52,7 +52,8 @@ const User = conn.define('user', {
     },
     stocks: {
         type: conn.Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: "SPY"
     },
 });
 
