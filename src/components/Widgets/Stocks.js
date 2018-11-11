@@ -26,7 +26,7 @@ class Stocks extends Component {
     }
     
     handleClose = () => {
-        this.setState({ open: false })
+        this.setState({ open: false, tickers: '' })
     }
 
     handleChange = name => event => {
@@ -40,7 +40,6 @@ class Stocks extends Component {
         if(stocks.length) {
             stocks = authenticatedUser.stocks.length ? stocks.concat(`,${authenticatedUser.stocks}`) : stocks
             this.props.updateUser({...this.props.authenticatedUser, stocks })
-            this.setState({ tickers: '' })
         }
         this.handleClose()
     }

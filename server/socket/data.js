@@ -48,7 +48,7 @@ class Data {
     }
 
     getStockListForSocket(socketId, stocksData) {
-        if(!this._stocksListPerSocket[socketId]) {
+        if(!this._stocksListPerSocket[socketId] || !stocksData) {
             return {}
         }
         const stocksForSocket = this._stocksListPerSocket[socketId].split(',');

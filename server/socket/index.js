@@ -23,6 +23,7 @@ module.exports = io => {
         MemoryData.setStockListForSocket(socket.id, stocks);
         requestStockUpdate(io, stocks);
       } else if(MemoryData.getStockListForSocket(socket.id)) {
+        io.to(socket.id).emit('update-stocks', {});
         MemoryData.removeSocket(socket.id);
       }
     });
