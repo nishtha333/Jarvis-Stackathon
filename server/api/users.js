@@ -1,4 +1,4 @@
-const { uploadImageToS3, uploadImageToFaceCollection, 
+const { uploadImageToS3, uploadImageToFaceCollection, deleteFromS3,
     createAndUploadWelcomeMsg, searchFaceByImageInCollection, deleteImageFromFaceCollection } = require('../db/utils')
 const { User } = require('../db').models;
 const express = require('express');
@@ -45,7 +45,7 @@ router.post("/", (req, res, next) => {
         .catch(next);
 });
 
-/* TO DO: If new image is updated, need to update S3 and FaceCollection  and new FaceID should be saved*/
+//If new image is updated, need to update S3 and FaceCollection and new FaceID should be saved
 router.put("/", async (req, res, next) => {
     const { firstName, lastName, image, email, address } = req.body
     let imageName, imageUrl, faceId, audioName, audioUrl
@@ -60,6 +60,7 @@ router.put("/", async (req, res, next) => {
 
         if(image.length) {
             await deleteImageFromFaceCollection(faceId);
+            await deleteFromS3(user.imageName);
             const result = await uploadImageToS3(image, firstName.concat(lastName));
             imageName = result.imageKey;
             imageUrl = result.url;
@@ -68,12 +69,14 @@ router.put("/", async (req, res, next) => {
         } 
 
         if(user.firstName != firstName) {
+            await deleteFromS3(user.audioName);
             const audio = await createAndUploadWelcomeMsg(firstName);
             audioName = audio.audioName;
             audioUrl = audio.audioUrl;             
         }                       
-        await user.update({ firstName, lastName, imageName, faceId, imageUrl, email, address, audioName, audioUrl });
-        const update = await User.findOne({ where: { faceId } });
+
+        const update = await user.update({ firstName, lastName, imageName, faceId, imageUrl, email, 
+            address, audioName, audioUrl });
         res.send(update);
     }
     catch(error) {
@@ -81,10 +84,17 @@ router.put("/", async (req, res, next) => {
     }
 });
 
-/*TO DO: Remove the image from S3 bucket and Face Collection */
-router.delete("/:id", (req, res, next) => {
-    User.findById(req.params.id)
-        .then(user => user.destroy())
-        .then(() => res.sendStatus(204))
-        .catch(next);
+// Remove the image from S3 bucket and Face Collection 
+router.delete("/:faceId", async (req, res, next) => {
+
+    try {
+        const user = await User.findOne({ where: { faceId: req.params.faceId } });
+        await deleteImageFromFaceCollection(user.faceId);
+        await deleteFromS3(user.imageName);
+        await deleteFromS3(user.audioName);
+        await user.destroy();
+        res.sendStatus(204);
+    } catch(error) {
+        next(error)
+    }
 });

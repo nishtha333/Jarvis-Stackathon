@@ -4,7 +4,7 @@ import { Grid, Button, TextField, Typography, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Camera from './Camera'
-import { updateUser } from '../../store';
+import { updateUser, deleteUser } from '../../store';
 
 class Profile extends Component {
     constructor() {
@@ -19,6 +19,7 @@ class Profile extends Component {
             error: '',
         }
         this.handleUpdate = this.handleUpdate.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleSetImage = this.handleSetImage.bind(this)
     }
@@ -48,9 +49,20 @@ class Profile extends Component {
         ) 
     }
 
+    handleDelete(event) {
+        event.preventDefault()
+        const { faceId } = this.props.authenticatedUser
+        this.props.deleteUser(faceId)
+            .then(() => this.props.history.push('/'))
+            .catch(error => {
+                this.setState({ error: error.message });
+            }
+        ) 
+    }
+
     render() {
         const { firstName, lastName, image, email, address, error, imageUrl } = this.state
-        const { handleChange, handleUpdate, handleSetImage } = this
+        const { handleChange, handleUpdate, handleDelete, handleSetImage } = this
         const { classes } = this.props
 
         return (
@@ -79,6 +91,10 @@ class Profile extends Component {
                                     Update
                                 </Button>
 
+                                <Button variant="contained" className={classes.button} color="secondary" onClick={handleDelete} >
+                                    Delete Profile
+                                </Button>
+
                                 {
                                     error && 
                                         <Typography variant="subheading" className={classes.error}>
@@ -103,6 +119,7 @@ const mapStateToProps = ({ authenticatedUser }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         updateUser: user => dispatch(updateUser(user)),
+        deleteUser: (faceId) => dispatch(deleteUser(faceId)),
     }
 }
 

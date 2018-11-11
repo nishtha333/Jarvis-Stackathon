@@ -26,6 +26,17 @@ const updateUser = (user) => {
     }
 }
 
+const deleteUser = (faceId) => {
+    return (dispatch) => {
+        return axios.delete(`/api/users/${faceId}`)
+            .then(() => {
+                dispatch(_setAuthenticatedUser({}))
+            }).catch(error => {
+                throw error
+            })
+    }
+}
+
 const login = (data) => {
     return (dispatch) => {
         return axios.post('/api/auth', data)
@@ -77,4 +88,4 @@ const authenticatedUserReducer = (state = {}, action) => {
     }
 }
 
-export { login, logout, exchangeTokenForAuth, addUser, updateUser, authenticatedUserReducer }
+export { login, logout, exchangeTokenForAuth, addUser, updateUser, deleteUser, authenticatedUserReducer }

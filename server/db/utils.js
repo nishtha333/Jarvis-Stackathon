@@ -76,6 +76,16 @@ const deleteImageFromFaceCollection = (faceId) => {
     }).promise();
 }
 
+const deleteFromS3 = (Key) => {
+    return S3.deleteObjects({ 
+        Bucket: AWS_S3_BUCKET_NAME,
+        Delete: {
+            Objects: [ { Key } ],
+            Quiet: true
+        }, 
+    }).promise();
+}
+
 const searchFaceByImageInCollection = async (image) => {
     try {
         const regex = /data:image\/(\w+);base64,(.*)/
@@ -130,5 +140,6 @@ module.exports = {
     uploadImageToFaceCollection,
     searchFaceByImageInCollection,
     createAndUploadWelcomeMsg,
-    deleteImageFromFaceCollection
+    deleteImageFromFaceCollection,
+    deleteFromS3
 }
