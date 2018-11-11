@@ -59,7 +59,7 @@ router.put("/", async (req, res, next) => {
         audioName = user.audioName;
         audioUrl = user.audioUrl;
 
-        if(image.length) {
+        if(image && image.length) {
             await deleteImageFromFaceCollection(faceId);
             await deleteFromS3(user.imageName);
             const result = await uploadImageToS3(image, uuidv4());
