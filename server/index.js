@@ -11,26 +11,21 @@ const io = require('socket.io')(server);
 // handle sockets
 require('./socket')(io);
 
-
-const TIME_INTERVAL_FOR_REFRESH_REQUEST = process.env.TIME_INTERVAL_FOR_REFRESH_REQUEST || 30000;
-
-//Subscribe to Latest News
-const newsapi = new NewsAPI(NEWS_API_KEY);
-//setInterval(() => { 
+const requestNewsUpdate = () => {
+      const newsapi = new NewsAPI(NEWS_API_KEY);
       newsapi.v2.everything({ sources: 'bloomberg,business-insider,cnbc,google-news,abc-news,bbc-news,bbc-sport,the-verge', language: 'en'})
             .then(response => {
                   MemoryData.news = { articles: response.articles };
                   io.sockets.emit('update-news', MemoryData.news);
             })
             .catch(error => console.log(error));
-//}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
+}
 
+const requestStockUpdate = () => {
+      //TO DO: Hard-code for now. Users should be able to add to it and only get updates for the ones they requested
+      const identifiers = ['SPY', 'GLD', 'XLF', 'NFLX', 'GOOG', 'AAPL', 'AMZN'].join(',')
+      const requestedPoints = 'price_date,last_price,close_price,percent_change,open_price,high_price,low_price'
 
-//Subscribe to Stock Updates
-//TO DO: Hard-code for now. Users should be able to add to it and only get updates for the ones they requested
-const identifiers = ['SPY', 'GLD', 'XLF', 'NFLX', 'GOOG', 'AAPL', 'AMZN'].join(',')
-const requestedPoints = 'price_date,last_price,close_price,percent_change,open_price,high_price,low_price'
-//setInterval(() => { 
       axios.get(`https://api.intrinio.com/data_point?identifier=${identifiers}&item=${requestedPoints}&api_key=${INTRINO_STOCK_API_KEY}`)
             .then(response => response.data)
             .then(stocks => {
@@ -38,14 +33,12 @@ const requestedPoints = 'price_date,last_price,close_price,percent_change,open_p
                   io.sockets.emit('update-stocks', MemoryData.stocks);
             })
             .catch(error => console.log(error));
-//}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
-
+}
 
 const TOP_POPULAR_ITEMS_NUMBER = 10;
 const sortByPopularity = (obj1, obj2) =>  (obj2.popularity - obj1.popularity);
 
-//Get Trending Movies
-//setInterval(() => { 
+const requestMovies = () => {
       axios.get(`https://api.themoviedb.org/3/trending/movie/day?api_key=${TMBD_API_KEY}`)
             .then(response => response.data)
             .then(movies => {
@@ -53,10 +46,9 @@ const sortByPopularity = (obj1, obj2) =>  (obj2.popularity - obj1.popularity);
                   io.sockets.emit('update-movies', MemoryData.movies);
             })
             .catch(error => console.log(error));
-//}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
+}
 
-//Get Trending TV Shows
-//setInterval(() => { 
+const requestTVShows = () => {
       axios.get(`https://api.themoviedb.org/3/trending/tv/day?api_key=${TMBD_API_KEY}`)
             .then(response => response.data)
             .then(tv => {
@@ -64,9 +56,21 @@ const sortByPopularity = (obj1, obj2) =>  (obj2.popularity - obj1.popularity);
                   io.sockets.emit('update-tv', MemoryData.tv);
             })
             .catch(error => console.log(error));
-//}, TIME_INTERVAL_FOR_REFRESH_REQUEST);
+}
 
+const requestRefresh = () => {
+      console.log("Refreshing...");
+      requestNewsUpdate();
+      requestStockUpdate();
+      requestMovies();
+      requestTVShows();
+}
 
+requestRefresh();
+
+setInterval(() => {
+      requestRefresh();
+}, process.env.TIME_INTERVAL_FOR_REFRESH_REQUEST);
 
 if (process.env.SYNC_DB) {
       const conn = require('./db/conn');

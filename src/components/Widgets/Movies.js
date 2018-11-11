@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Table, TableHead, TableRow, TableBody, TableCell, CircularProgress } from '@material-ui/core';
+import { Paper, Table, TableHead, TableRow, TableBody, TableCell, CircularProgress, Tooltip } from '@material-ui/core';
 
 class Movies extends Component {
 
@@ -23,10 +23,12 @@ class Movies extends Component {
                         (isLoading 
                             ? <CircularProgress className={classes.progress} />
                             : movies.map((movie, index) => 
-                                <TableRow key={index} className={classes.row}>
-                                    <CustomTableCell>{movie.title}</CustomTableCell>
-                                    <CustomTableCell>{movie.popularity}</CustomTableCell>
-                                </TableRow>)
+                                <Tooltip key={index} title={`${movie.title} : ${movie.overview}`}>
+                                    <TableRow className={classes.row}>
+                                        <CustomTableCell>{movie.title}</CustomTableCell>
+                                        <CustomTableCell>{movie.popularity}</CustomTableCell>
+                                    </TableRow>
+                                </Tooltip>)
                         )
                     }
                     </TableBody>
