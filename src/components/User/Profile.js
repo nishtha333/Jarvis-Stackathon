@@ -22,11 +22,26 @@ class Profile extends Component {
         this.handleDelete = this.handleDelete.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleSetImage = this.handleSetImage.bind(this)
+        this.loadState = this.loadState.bind(this)
+    }
+
+    loadState() {
+        const { firstName, lastName, imageUrl, email, address } = this.props.authenticatedUser
+        this.setState({ firstName, lastName, imageUrl, 
+            email: email ? email : '', 
+            address: address ? address: '',
+            image: '' 
+        })
     }
 
     componentDidMount() {
-        const { firstName, lastName, imageUrl, email, address } = this.props.authenticatedUser
-        this.setState({ firstName, lastName, imageUrl, email, address })
+        this.loadState()
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.authenticatedUser.id && prevProps.authenticatedUser != this.props.authenticatedUser) {
+            this.loadState()
+        }
     }
 
     handleChange = name => event => {

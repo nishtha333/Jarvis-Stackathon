@@ -2,6 +2,7 @@ const { uploadImageToS3, uploadImageToFaceCollection, deleteFromS3,
     createAndUploadWelcomeMsg, searchFaceByImageInCollection, deleteImageFromFaceCollection } = require('../db/utils')
 const { User } = require('../db').models;
 const express = require('express');
+const uuidv4 = require('uuid/v4');
 const router = express.Router();
 
 module.exports = router;
@@ -30,7 +31,7 @@ router.post("/", (req, res, next) => {
             if(response) {
                 throw new Error("User already registered. Please login..")
             } else {
-                return uploadImageToS3(image, firstName.concat(lastName))
+                return uploadImageToS3(image, uuidv4())
             }
         }).then(({ imageKey, url }) => {
             imageName = imageKey; 
@@ -61,7 +62,7 @@ router.put("/", async (req, res, next) => {
         if(image.length) {
             await deleteImageFromFaceCollection(faceId);
             await deleteFromS3(user.imageName);
-            const result = await uploadImageToS3(image, firstName.concat(lastName));
+            const result = await uploadImageToS3(image, uuidv4());
             imageName = result.imageKey;
             imageUrl = result.url;
             const { id } = await uploadImageToFaceCollection(imageName);
